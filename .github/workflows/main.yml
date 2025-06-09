@@ -41,3 +41,15 @@ jobs:
 
       - name: Push Docker Image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/node-docker-demo:latest
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.EC2_HOST1 }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            docker pull ${{ secrets.DOCKER_USERNAME }}/node-docker-demo:latest
+            docker stop node-docker-demo || true
+            docker rm node-docker-demo || true
+            docker run -d -p 80:3000 --name node-docker-demo ${{ secrets.DOCKER_USERNAME }}/node-docker-demo:latest
