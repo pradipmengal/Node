@@ -40,7 +40,7 @@ jobs:
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/node-docker-demo:v1 .
 
       - name: Push Docker Image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/node-docker-demo:latest
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/node-docker-demo:v1
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v0.1.10
