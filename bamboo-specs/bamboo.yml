@@ -1,21 +1,74 @@
+---
 version: 2
 plan:
-  project-key: DEMO
-  key: SYSINFO
-  name: System Info Display
-
+  project-key: NOD
+  key: NOD
+  name: Node-plan
 stages:
-  - Stage 1:
-      jobs:
-        - Show Info
+- Default Stage:
+    manual: false
+    final: false
+    jobs:
+    - Default Job
+Default Job:
+  key: JOB1
+  tasks:
+# Checkout Task for default repository will be added implicitly during Specs import
+  - script:
+      interpreter: SHELL
+      scripts:
+      - |-
+        #!/bin/bash
 
-jobs:
-  - Show Info:
-      tasks:
-        - script:
-            interpreter: SHELL
-            scripts:
-              - echo "===== SYSTEM INFO ====="
-              - uname -a
-              - whoami
-              - env
+        # Print current working directory
+        echo "Current working directory: $(pwd)"
+
+        # Check disk space
+        echo "Disk space usage:"
+        df -h
+
+        echo "Print the user"
+        echo $USER
+      description: System Info
+  artifact-subscriptions: []
+repositories:
+- Nodeapp:
+    scope: global
+triggers:
+- github-trigger
+branches:
+  create: manually
+  delete: never
+  link-to-jira: true
+notifications: []
+labels: []
+dependencies:
+  require-all-stages-passing: false
+  enabled-for-branches: true
+  block-strategy: none
+  plans: []
+other:
+  concurrent-build-plugin:
+    number-of-concurrent-builds: system-default
+    execution-strategy: block-triggering
+---
+version: 2
+plan:
+  key: NOD-NOD
+plan-permissions:
+- users:
+  - root
+  permissions:
+  - view
+  - edit
+  - build
+  - clone
+  - admin
+  - view-configuration
+  - create-plan-branch
+- roles:
+  - logged-in
+  - anonymous
+  permissions:
+  - view
+...
