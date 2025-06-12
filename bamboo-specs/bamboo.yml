@@ -40,7 +40,7 @@ Default Job:
   artifact-subscriptions: []
 
 second job:
-  key: stg2
+  key: STG2
   tasks:
 # Checkout Task for default repository will be added implicitly during Specs import
   - checkout: {}
