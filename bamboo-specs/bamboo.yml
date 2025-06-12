@@ -29,6 +29,8 @@ Default Job:
 
         echo "Print the user"
         echo $USER
+
+        echo "Hello world"
       description: System Info
   artifact-subscriptions: []
 repositories:
