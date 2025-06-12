@@ -1,0 +1,21 @@
+version: 2
+plan:
+  project-key: DEMO
+  key: SYSINFO
+  name: System Info Display
+
+stages:
+  - Stage 1:
+      jobs:
+        - Show Info
+
+jobs:
+  - Show Info:
+      tasks:
+        - script:
+            interpreter: SHELL
+            scripts:
+              - echo "===== SYSTEM INFO ====="
+              - uname -a
+              - whoami
+              - env
