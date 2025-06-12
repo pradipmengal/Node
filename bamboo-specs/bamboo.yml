@@ -4,76 +4,92 @@ plan:
   project-key: NOD
   key: NOD
   name: Node-plan
+
 stages:
-- Default Stage:
+- Checkout Code:
     manual: false
     final: false
     jobs:
-    - Default Job
--  staSecondge:
+    - Checkout Job
+- Build Docker Image:
     manual: false
+    final: false
     jobs:
-    - second job
+    - Build Job
+- Run Docker Container:
+    manual: false
+    final: false
+    jobs:
+    - Run Job
 
-Default Job:
+Checkout Job:
   key: JOB1
   tasks:
-# Checkout Task for default repository will be added implicitly during Specs import
-  - script:
-      interpreter: SHELL
-      scripts:
-      - |-
-        #!/bin/bash
-
-        # Print current working directory
-        echo "Current working directory: $(pwd)"
-
-        # Check disk space
-        echo "Disk space usage:"
-        df -h
-
-        echo "Print the user"
-        echo $USER
-
-        echo "Hello world"
-      description: System Info
-  artifact-subscriptions: []
-
-second job:
-  key: STG2
-  tasks:
-# Checkout Task for default repository will be added implicitly during Specs import
   - checkout: {}
   - script:
       interpreter: SHELL
       scripts:
-      
       - |-
         #!/bin/bash
-
-        echo "Code checkout"
-
-        
-      description: code Checkout
+        echo "Code checked out successfully."
+      description: Checkout code
   artifact-subscriptions: []
 
+Build Job:
+  key: JOB2
+  tasks:
+  - script:
+      interpreter: SHELL
+      scripts:
+      - |-
+        #!/bin/bash
+        echo "Building Docker image..."
+
+        # Build Docker image
+        docker build -t node-app:latest .
+
+        echo "Docker image built: node-app:latest"
+      description: Build Docker Image
+  artifact-subscriptions: []
+
+Run Job:
+  key: JOB3
+  tasks:
+  - script:
+      interpreter: SHELL
+      scripts:
+      - |-
+        #!/bin/bash
+        echo "Running Docker container..."
+
+        # Run container
+        docker run -d -p 3000:3000 --name node-app node-app:latest
+
+        echo "Container started on port 3000"
+      description: Run Docker Container
+  artifact-subscriptions: []
 
 repositories:
 - Nodeapp:
     scope: global
+
 triggers:
 - github-trigger
+
 branches:
   create: manually
   delete: never
   link-to-jira: true
+
 notifications: []
 labels: []
+
 dependencies:
   require-all-stages-passing: false
   enabled-for-branches: true
   block-strategy: none
   plans: []
+
 other:
   concurrent-build-plugin:
     number-of-concurrent-builds: system-default
