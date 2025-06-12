@@ -10,6 +10,11 @@ stages:
     final: false
     jobs:
     - Default Job
+-  staSecondge:
+    manual: false
+    jobs:
+    - second job
+
 Default Job:
   key: JOB1
   tasks:
@@ -33,6 +38,26 @@ Default Job:
         echo "Hello world"
       description: System Info
   artifact-subscriptions: []
+
+second job:
+  key: stg2
+  tasks:
+# Checkout Task for default repository will be added implicitly during Specs import
+  - checkout: {}
+  - script:
+      interpreter: SHELL
+      scripts:
+      
+      - |-
+        #!/bin/bash
+
+        echo "Code checkout"
+
+        
+      description: code Checkout
+  artifact-subscriptions: []
+
+
 repositories:
 - Nodeapp:
     scope: global
