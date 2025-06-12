@@ -64,8 +64,10 @@ Run Job:
 
         # Run container
         docker run -d -p 3000:3000 --name node-app node-app:latest
-
+        
         echo "Container started on port 3000"
+
+        echo "${bamboo_DOCKER_USERNAME}"
       description: Run Docker Container
   artifact-subscriptions: []
 
